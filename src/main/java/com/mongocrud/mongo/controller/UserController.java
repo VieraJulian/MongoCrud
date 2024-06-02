@@ -1,5 +1,7 @@
 package com.mongocrud.mongo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -33,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable String id) {
+    public ResponseEntity<?> findUserById(@PathVariable String id) {
         try {
             User user = userRepo.findById(id).orElse(null);
             return new ResponseEntity<User>(user, HttpStatus.OK);
@@ -42,4 +44,16 @@ public class UserController {
             return new ResponseEntity<String>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> findAllUser() {
+        try {
+            List<User> users = userRepo.findAll();
+            return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<String>(e.getCause().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
